@@ -5,13 +5,13 @@ import {
   FaInstagram,
   FaLinkedinIn,
   FaWhatsapp,
-  FaShareAlt, // added
+  FaShareAlt,
+  FaYoutube, // ✅ added
 } from "react-icons/fa";
 
 const SocialMediaButton = () => {
   const [showIcons, setShowIcons] = useState(false);
 
-  // Social media icons with links
   const iconStyles = [
     {
       color: "#1877F2",
@@ -22,6 +22,11 @@ const SocialMediaButton = () => {
       color: "#E4405F",
       icon: <FaInstagram />,
       link: "https://www.instagram.com/collegeofmelbourne?igsh=MTNkZHo4NDM5eW5saQ==",
+    },
+    {
+      color: "#FF0000", // ✅ YouTube color
+      icon: <FaYoutube />,
+      link: "https://www.youtube.com/", // replace with your channel
     },
     {
       color: "#25D366",
@@ -38,7 +43,6 @@ const SocialMediaButton = () => {
 
   return (
     <div className="fixed left-8 z-50">
-      {/* Main Floating Button */}
       <motion.button
         onClick={() => setShowIcons(!showIcons)}
         whileHover={{ scale: 1.1 }}
@@ -46,11 +50,9 @@ const SocialMediaButton = () => {
         className="w-14 h-14 rounded-full bg-black shadow-lg flex items-center justify-center text-white text-2xl"
         title="Follow Us"
       >
-        {/* Hamburger → Share Icon */}
         <FaShareAlt />
       </motion.button>
 
-      {/* Animated Icon Popup */}
       <AnimatePresence>
         {showIcons && (
           <motion.div
@@ -60,7 +62,6 @@ const SocialMediaButton = () => {
             transition={{ duration: 0.4 }}
             className="mb-2 flex flex-col items-center bg-white/90 backdrop-blur-lg rounded-xl p-3 shadow-xl relative"
           >
-            {/* Social Icons */}
             <div className="flex flex-col gap-3 items-center mt-4">
               {iconStyles.map((item, idx) => (
                 <motion.a
@@ -69,9 +70,9 @@ const SocialMediaButton = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.3 }}
-                  className={`text-xl md:text-2xl font-bold`}
+                  className="text-xl md:text-2xl font-bold"
                   style={{ color: item.color }}
-                  onClick={() => setShowIcons(false)} // Collapse menu on click
+                  onClick={() => setShowIcons(false)}
                 >
                   {item.icon}
                 </motion.a>

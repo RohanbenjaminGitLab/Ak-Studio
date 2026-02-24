@@ -45,7 +45,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-black text-white shadow-lg">
+    <nav className="sticky top-0 z-50 bg-black text-white shadow-lg font-[Cinzel] uppercase tracking-wider">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex justify-between items-center h-16">
 
@@ -65,7 +65,6 @@ const Navbar = () => {
             <Link to="/" className="hover:text-gray-300">Home</Link>
             <Link to="/" className="hover:text-gray-300">About</Link>
 
-            {/* Service Dropdown */}
             <div
               className="relative"
               onMouseEnter={() => setServiceOpen(true)}
@@ -88,13 +87,13 @@ const Navbar = () => {
                       to="/web-design"
                       className="block px-4 py-2 hover:bg-gray-800 transition"
                     >
-                      Web Design
+                      Vidio Editz
                     </Link>
                     <Link
                       to="/digital-marketing"
                       className="block px-4 py-2 hover:bg-gray-800 transition"
                     >
-                      Digital Marketing
+                      Photo Editz
                     </Link>
                   </motion.div>
                 )}
@@ -126,13 +125,13 @@ const Navbar = () => {
           >
             <Link to="/" onClick={() => setMobileOpen(false)} className="block hover:text-gray-300">Home</Link>
 
-            {/* Mobile Service Accordion */}
             <button
               onClick={() => setServiceOpen(!serviceOpen)}
               className="flex justify-between items-center w-full hover:text-gray-300"
             >
               Service <Chevron isOpen={serviceOpen} />
             </button>
+
             <AnimatePresence>
               {serviceOpen && (
                 <motion.div
@@ -141,20 +140,8 @@ const Navbar = () => {
                   exit={{ height: 0, opacity: 0 }}
                   className="pl-4 flex flex-col space-y-1"
                 >
-                  <Link
-                    to="/web-design"
-                    onClick={() => setMobileOpen(false)}
-                    className="hover:text-gray-300 transition"
-                  >
-                    Web Design
-                  </Link>
-                  <Link
-                    to="/digital-marketing"
-                    onClick={() => setMobileOpen(false)}
-                    className="hover:text-gray-300 transition"
-                  >
-                    Digital Marketing
-                  </Link>
+                  <Link to="/web-design" onClick={() => setMobileOpen(false)}>Vidio Editz</Link>
+                  <Link to="/digital-marketing" onClick={() => setMobileOpen(false)}>Photo Editz</Link>
                 </motion.div>
               )}
             </AnimatePresence>
