@@ -52,9 +52,9 @@ const Navbar = () => {
           {/* ===== Logo ===== */}
           <Link to="/" onClick={() => setMobileOpen(false)}>
             <motion.img
-              src="/Logo.jpeg"
+              src="/AKEDITZLOG.png"
               alt="Logo"
-              className="h-16 w-auto"
+              className="h-32 w-auto"
               whileHover={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 300 }}
             />
