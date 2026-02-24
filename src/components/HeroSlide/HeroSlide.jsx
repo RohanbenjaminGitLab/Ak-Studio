@@ -59,8 +59,8 @@ export default function HeroSlider() {
   const [[activeIndex, direction], setActiveIndex] = useState([0, 0]);
 
   const images = [
-    "/Pic1.jpeg",
-    "/pic2.jpeg",
+    "/Crousel.jpg",
+    "/Crousel1.jpg",
     "/pic3.jpeg",
     "/pic4.jpeg",
     "/pic5.jpeg",
