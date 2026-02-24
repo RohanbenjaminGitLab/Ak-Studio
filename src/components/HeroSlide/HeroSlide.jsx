@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
 import { FaPhoneAlt } from "react-icons/fa";
 
 /* ===================== TrueFocus Component ===================== */
@@ -16,7 +15,7 @@ const TrueFocus = ({
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % words.length);
-    }, (animationDuration + pauseBetweenAnimations) * 1000);
+    }, (animationDuration + pauseBetweenAnimations) * 3000);
     return () => clearInterval(interval);
   }, [words.length, animationDuration, pauseBetweenAnimations]);
 
@@ -39,9 +38,25 @@ const TrueFocus = ({
 };
 
 /* ===================== HeroSlider Component ===================== */
+
+const variants = {
+  enter: (direction) => ({
+    x: direction > 0 ? "100%" : "-100%",
+    opacity: 1,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction) => ({
+    x: direction > 0 ? "-100%" : "100%",
+    opacity: 1,
+  }),
+};
+
 export default function HeroSlider() {
   const [showContact, setShowContact] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [[activeIndex, direction], setActiveIndex] = useState([0, 0]);
 
   const images = [
     "/Pic1.jpeg",
@@ -51,33 +66,83 @@ export default function HeroSlider() {
     "/pic5.jpeg",
   ];
 
-  // Change image every 1 second
+  /* ✅ Slow auto slide (5 seconds) */
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % images.length);
-    }, 1000); // 1 second per image
+      paginate(1);
+    }, 5000);
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, []);
+
+  const paginate = (newDirection) => {
+    setActiveIndex(([prev]) => [
+      (prev + newDirection + images.length) % images.length,
+      newDirection,
+    ]);
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset, velocity) => {
+    return Math.abs(offset) * velocity;
+  };
 
   return (
     <div className="relative w-full h-[90vh] overflow-hidden">
-      {/* ===== Sliding Image Carousel ===== */}
-      <div className="absolute inset-0 w-full h-full flex">
-        {images.map((img, index) => (
-          <AnimatePresence key={index}>
-            {index === activeIndex && (
-              <motion.img
-                key={index}
-                src={img}
-                alt={`hero-${index}`}
-                className="absolute w-full h-full object-cover"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-              />
-            )}
-          </AnimatePresence>
+
+      {/* ===== Slide Animation Carousel ===== */}
+      <AnimatePresence initial={false} custom={direction}>
+        <motion.img
+          key={activeIndex}
+          src={images[activeIndex]}
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 1 }} // slow smooth animation
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={1}
+          onDragEnd={(e, { offset, velocity }) => {
+            const swipe = swipePower(offset.x, velocity.x);
+            if (swipe < -swipeConfidenceThreshold) {
+              paginate(1);
+            } else if (swipe > swipeConfidenceThreshold) {
+              paginate(-1);
+            }
+          }}
+          className="absolute w-full h-full object-cover"
+        />
+      </AnimatePresence>
+
+      {/* ===== Left Arrow ===== */}
+      <button
+        onClick={() => paginate(-1)}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-40 bg-black/50 text-white px-4 py-2 rounded-full hover:bg-black"
+      >
+        ❮
+      </button>
+
+      {/* ===== Right Arrow ===== */}
+      <button
+        onClick={() => paginate(1)}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-40 bg-black/50 text-white px-4 py-2 rounded-full hover:bg-black"
+      >
+        ❯
+      </button>
+
+      {/* ===== Dot Indicators ===== */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex gap-3">
+        {images.map((_, index) => (
+          <div
+            key={index}
+            onClick={() =>
+              setActiveIndex([index, index > activeIndex ? 1 : -1])
+            }
+            className={`w-3 h-3 rounded-full cursor-pointer transition ${
+              index === activeIndex ? "bg-white scale-125" : "bg-white/50"
+            }`}
+          />
         ))}
       </div>
 
@@ -109,8 +174,8 @@ export default function HeroSlider() {
               <p className="text-sm text-gray-700 mb-1">⏰ 9:00 AM – 5:00 PM</p>
               <p className="text-sm text-gray-700">
                 📞{" "}
-                <a href="tel:761613232" className="text-black font-semibold">
-                 0772397220
+                <a href="tel:0772397220" className="text-black font-semibold">
+                  0772397220
                 </a>
               </p>
 
