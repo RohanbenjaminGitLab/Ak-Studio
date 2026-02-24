@@ -61,7 +61,7 @@ const Navbar = () => {
           </Link>
 
           {/* ===== Desktop Menu ===== */}
-          <div className="hidden md:flex items-center space-x-8 font-semibold text-lg">
+          <div className="hidden md:flex items-center space-x-8 font-semibold text-md">
             <Link to="/" className="hover:text-gray-300">Home</Link>
             <Link to="/" className="hover:text-gray-300">About</Link>
 
@@ -121,7 +121,7 @@ const Navbar = () => {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden bg-black px-6 py-4 space-y-3 font-semibold text-lg"
+            className="md:hidden bg-black px-6 py-4 space-y-3 font-semibold text-md"
           >
             <Link to="/" onClick={() => setMobileOpen(false)} className="block hover:text-gray-300">Home</Link>
 
