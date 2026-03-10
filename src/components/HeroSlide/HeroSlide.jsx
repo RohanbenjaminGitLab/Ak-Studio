@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaPhoneAlt } from "react-icons/fa";
 
 /* ===================== TrueFocus Component ===================== */
+
 const TrueFocus = ({
   sentence = "Your Future Dream",
   blurAmount = 6,
@@ -16,15 +17,16 @@ const TrueFocus = ({
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % words.length);
     }, (animationDuration + pauseBetweenAnimations) * 3000);
+
     return () => clearInterval(interval);
   }, [words.length, animationDuration, pauseBetweenAnimations]);
 
   return (
-    <div className="relative flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2">
       {words.map((word, idx) => (
         <span
           key={idx}
-          className="relative font-extrabold text-white text-3xl sm:text-4xl md:text-5xl"
+          className="font-extrabold text-white text-3xl sm:text-4xl md:text-5xl"
           style={{
             filter: idx === currentIndex ? "blur(0px)" : `blur(${blurAmount}px)`,
             transition: `filter ${animationDuration}s ease`,
@@ -37,7 +39,7 @@ const TrueFocus = ({
   );
 };
 
-/* ===================== HeroSlider Component ===================== */
+/* ===================== Animation Variants ===================== */
 
 const variants = {
   enter: (direction) => ({
@@ -54,6 +56,8 @@ const variants = {
   }),
 };
 
+/* ===================== Hero Slider ===================== */
+
 export default function HeroSlider() {
   const [showContact, setShowContact] = useState(false);
   const [[activeIndex, direction], setActiveIndex] = useState([0, 0]);
@@ -61,16 +65,17 @@ export default function HeroSlider() {
   const images = [
     "/Crousel.jpg",
     "/Crousel1.jpg",
-    "/pic3.jpeg",
+    "/pic2.png",
     "/pic4.jpeg",
     "/pic5.jpeg",
   ];
 
-  /* ✅ Slow auto slide (5 seconds) */
+  /* Auto Slide */
   useEffect(() => {
     const interval = setInterval(() => {
       paginate(1);
     }, 5000);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -82,14 +87,16 @@ export default function HeroSlider() {
   };
 
   const swipeConfidenceThreshold = 10000;
+
   const swipePower = (offset, velocity) => {
     return Math.abs(offset) * velocity;
   };
 
   return (
-    <div className="relative w-full h-[90vh] overflow-hidden">
+    <div className="relative w-full h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] overflow-hidden">
 
-      {/* ===== Slide Animation Carousel ===== */}
+      {/* ===== Carousel ===== */}
+
       <AnimatePresence initial={false} custom={direction}>
         <motion.img
           key={activeIndex}
@@ -99,40 +106,58 @@ export default function HeroSlider() {
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{ duration: 1 }} // slow smooth animation
+          transition={{ duration: 1 }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={1}
           onDragEnd={(e, { offset, velocity }) => {
             const swipe = swipePower(offset.x, velocity.x);
+
             if (swipe < -swipeConfidenceThreshold) {
               paginate(1);
             } else if (swipe > swipeConfidenceThreshold) {
               paginate(-1);
             }
           }}
-          className="absolute w-full h-full object-cover"
+          className="absolute top-0 left-0 w-full h-full object-cover object-center"
         />
       </AnimatePresence>
 
+      {/* ===== Overlay ===== */}
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10" />
+
+      {/* ===== Hero Text ===== */}
+
+      <div className="absolute z-20 inset-0 flex flex-col justify-center items-center text-center px-6">
+        <TrueFocus sentence="Your Future Dream" />
+
+        <p className="text-white mt-4 text-sm sm:text-base md:text-lg max-w-xl">
+          Build your future with confidence and technology. Start your journey today.
+        </p>
+      </div>
+
       {/* ===== Left Arrow ===== */}
+
       <button
         onClick={() => paginate(-1)}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-40 bg-black/50 text-white px-4 py-2 rounded-full hover:bg-black"
+        className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-30 bg-black/50 text-white px-3 py-2 sm:px-4 rounded-full hover:bg-black"
       >
         ❮
       </button>
 
       {/* ===== Right Arrow ===== */}
+
       <button
         onClick={() => paginate(1)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-40 bg-black/50 text-white px-4 py-2 rounded-full hover:bg-black"
+        className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-30 bg-black/50 text-white px-3 py-2 sm:px-4 rounded-full hover:bg-black"
       >
         ❯
       </button>
 
-      {/* ===== Dot Indicators ===== */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex gap-3">
+      {/* ===== Dots ===== */}
+
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-3">
         {images.map((_, index) => (
           <div
             key={index}
@@ -146,49 +171,49 @@ export default function HeroSlider() {
         ))}
       </div>
 
-      {/* ===== Dark Overlay ===== */}
-      <div className="absolute inset-0 bg-black/40 z-10" />
+      {/* ===== Phone Button ===== */}
 
-      {/* ===== Phone Button & Contact Popup ===== */}
-      <div className="relative">
-        <motion.button
-          onClick={() => setShowContact(!showContact)}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-black shadow-xl flex items-center justify-center"
-        >
-          <FaPhoneAlt className="text-white text-xl sm:text-2xl" />
-        </motion.button>
+      <motion.button
+        onClick={() => setShowContact(!showContact)}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-black shadow-xl flex items-center justify-center"
+      >
+        <FaPhoneAlt className="text-white text-xl sm:text-2xl" />
+      </motion.button>
 
-        <AnimatePresence>
-          {showContact && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed bottom-6 right-20 z-50 w-48 h-32 rounded-l-full bg-white/90 backdrop-blur-lg shadow-xl p-4 flex flex-col justify-center items-start"
+      {/* ===== Contact Popup ===== */}
+
+      <AnimatePresence>
+        {showContact && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed bottom-6 right-20 z-50 w-56 sm:w-64 rounded-xl bg-white/95 backdrop-blur-lg shadow-xl p-4"
+          >
+            <h4 className="font-bold text-gray-800 mb-2">Contact</h4>
+
+            <p className="text-sm text-gray-700">📅 Sat – Thu</p>
+            <p className="text-sm text-gray-700">⏰ 9:00 AM – 5:00 PM</p>
+
+            <p className="text-sm text-gray-700 mt-1">
+              📞{" "}
+              <a href="tel:0772397220" className="text-black font-semibold">
+                0772397220
+              </a>
+            </p>
+
+            <button
+              onClick={() => setShowContact(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
             >
-              <h4 className="font-bold text-gray-800 mb-1">Contact</h4>
-              <p className="text-sm text-gray-700 mb-1">📅 Sat – Thu</p>
-              <p className="text-sm text-gray-700 mb-1">⏰ 9:00 AM – 5:00 PM</p>
-              <p className="text-sm text-gray-700">
-                📞{" "}
-                <a href="tel:0772397220" className="text-black font-semibold">
-                  0772397220
-                </a>
-              </p>
-
-              <button
-                onClick={() => setShowContact(false)}
-                className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
-              >
-                ✕
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+              ✕
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
