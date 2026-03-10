@@ -125,18 +125,7 @@ export default function HeroSlider() {
 
       {/* ===== Overlay ===== */}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10" />
-
-      {/* ===== Hero Text ===== */}
-
-      <div className="absolute z-20 inset-0 flex flex-col justify-center items-center text-center px-6">
-        <TrueFocus sentence="Your Future Dream" />
-
-        <p className="text-white mt-4 text-sm sm:text-base md:text-lg max-w-xl">
-          Build your future with confidence and technology. Start your journey today.
-        </p>
-      </div>
-
+      <div className="absolute inset-0 bg-gradient- from-black/70 via-black/30 to-transparent z-10" />
       {/* ===== Left Arrow ===== */}
 
       <button
